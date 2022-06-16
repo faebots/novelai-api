@@ -1,0 +1,4 @@
+'argon2-cffi'>=21.2.0
+'PyNaCl'>=1.4.0
+'requests'>=2.28.0
+'passlib'>=1.7.4
