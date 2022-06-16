@@ -112,20 +112,21 @@ class NAIApi:
         else:
             raise ex
 
-    def get_custom_modules():
+    def get_custom_modules(get_by_id = True):
         response = NAIApi.__get_objects__("aimodules")
         if response is not None:
-            modules = {}
+            modules = []
             for obj in response:
                 meta = obj["meta"]
                 data = base64.b64decode(obj["data"])
                 nonce = data[:24]
                 sdata = data[24:]
                 module = json.loads(NAIApi.__decode_secret_box__(sdata, nonce, bytes(NAIApi.__keystore__[meta])).decode('UTF-8'))
-                modules[module["id"]] = {
-                    "name": module["name"],
-                    "description": module["description"]
-                }
+                modules.append({
+                                    "id": module["id"],
+                                    "name": module["name"],
+                                    "description": module["description"]
+                                })
             return modules
         else:
             return None
