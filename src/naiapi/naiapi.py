@@ -185,6 +185,7 @@ class NAIApi:
         if module is not None:
             if module.startswith(MODELS[model]):
                 params.prefix = module
+        print(params)
         if get_stream:
             api_url = NAIApi.__base_url__ + "ai/generate-stream"
         else:
@@ -192,7 +193,7 @@ class NAIApi:
         body = {
             "input": input,
             "model": MODELS[model],
-            "parameters": params.json()
+            "parameters": params.export()
         }
         response = requests.post(api_url, json=body, headers=NAIApi.__header__)
         ex = response_code_exception(response)
@@ -638,7 +639,7 @@ class Params:
         if p.order is not None:
             self.order = p.order
     
-    def json(self):
+    def export(self):
         result = dict()
         if self.temperature is not None:
             result['temperature'] = self.temperature
@@ -698,7 +699,7 @@ class Params:
             result['generate_until_sentence'] = self.generate_until_sentence
         if self.order is not None:
             result['order'] = self.order
-        return json.dumps(result)
+        return result
 
 def response_code_exception(response):
     if response is None:
