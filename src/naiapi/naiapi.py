@@ -302,6 +302,7 @@ class Params:
                 prefix="vanilla",
                 temperature=None,
                 max_length=40,
+                context_length=None,
                 min_length=1,
                 top_k=None,
                 top_p=None,
@@ -346,6 +347,7 @@ class Params:
         self.output_nonzero_probs = output_nonzero_probs        
         self.next_word = next_word        
         self.num_logprobs = num_logprobs
+        self.context_length = context_length
         self.max_length = max_length
         self.min_length = min_length
         self.use_cache = use_cache
