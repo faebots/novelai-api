@@ -192,7 +192,7 @@ class NAIApi:
         body = {
             "input": input,
             "model": MODELS[model],
-            "parameters": params.__dict__
+            "parameters": params.json()
         }
         response = requests.post(api_url, json=body, headers=NAIApi.__header__)
         ex = response_code_exception(response)
@@ -302,7 +302,6 @@ class Params:
                 prefix="vanilla",
                 temperature=None,
                 max_length=40,
-                context_length=None,
                 min_length=1,
                 top_k=None,
                 top_p=None,
@@ -328,57 +327,34 @@ class Params:
                 num_logprobs=None,
                 generate_until_sentence=True,
                 order=None):
-        if temperature is not None:
-            self.temperature = temperature
-        if max_length is not None:
-            self.max_length = max_length
-        if context_length is not None:
-            self.context_length = context_length
-        if min_length is not None:
-            self.min_length = min_length
-        if top_k is not None:
-            self.top_k = top_k
-        if top_p is not None:
-            self.top_p = top_p
-        if top_a is not None:
-            self.top_a = top_a
-        if typical_p is not None:
-            self.typical_p = typical_p
-        if tail_free_sampling is not None:
-            self.tail_free_sampling = tail_free_sampling
-        if repetition_penalty is not None:
-            self.repetition_penalty = repetition_penalty
-        if repetition_penalty_slope is not None:
-            self.repetition_penalty_slope = repetition_penalty_slope
-        if repetition_penalty_frequency is not None:
-            self.repetition_penalty_frequency = repetition_penalty_frequency
-        if repetition_penalty_presence is not None:
-            self.repetition_penalty_presence = repetition_penalty_presence
-        if repetition_penalty_whitelist is not None:
-            self.repetition_penalty_whitelist = repetition_penalty_whitelist
-        if repetition_penalty_range is not None:
-            self.repetition_penalty_range = repetition_penalty_range
-        if logit_bias is not None:
-            self.logit_bias = logit_bias
-        if logit_bias_groups is not None:
-            self.logit_bias_groups = logit_bias_groups
-        if ban_brackets is not None:
-            self.ban_brackets = ban_brackets
-        if trim_spaces is not None:
-            self.trim_spaces = trim_spaces
-        if output_nonzero_probs is not None:
-            self.output_nonzero_probs = output_nonzero_probs
-        if next_word is not None:
-            self.next_word = next_word
-        if num_logprobs is not None:
-            self.num_logprobs = num_logprobs
-        self.bad_words_ids = bad_words_ids
+        self.temperature = temperature        
+        self.top_k = top_k        
+        self.top_p = top_p        
+        self.top_a = top_a        
+        self.typical_p = typical_p        
+        self.tail_free_sampling = tail_free_sampling        
+        self.repetition_penalty = repetition_penalty        
+        self.repetition_penalty_slope = repetition_penalty_slope        
+        self.repetition_penalty_frequency = repetition_penalty_frequency        
+        self.repetition_penalty_presence = repetition_penalty_presence        
+        self.repetition_penalty_whitelist = repetition_penalty_whitelist        
+        self.repetition_penalty_range = repetition_penalty_range        
+        self.logit_bias = logit_bias        
+        self.logit_bias_groups = logit_bias_groups        
+        self.ban_brackets = ban_brackets        
+        self.trim_spaces = trim_spaces        
+        self.output_nonzero_probs = output_nonzero_probs        
+        self.next_word = next_word        
+        self.num_logprobs = num_logprobs
+        self.max_length = max_length
+        self.min_length = min_length
         self.use_cache = use_cache
         self.use_string = use_string
         self.return_full_text = return_full_text
         self.prefix = prefix
         self.generate_until_sentence = generate_until_sentence
         self.order = order
+        self.bad_words_ids = bad_words_ids
 
     def preset(preset):
         if preset == "genesis":
@@ -659,6 +635,68 @@ class Params:
             self.generate_until_sentence = p.generate_until_sentence
         if p.order is not None:
             self.order = p.order
+    
+    def json(self):
+        result = dict()
+        if self.temperature is not None:
+            result['temperature'] = self.temperature
+        if self.max_length is not None:
+            result['max_length'] = self.max_length
+        if self.context_length is not None:
+            result['context_length'] = self.context_length
+        if self.min_length is not None:
+            result['min_length'] = self.min_length
+        if self.top_k is not None:
+            result['top_k'] = self.top_k
+        if self.top_p is not None:
+            result['top_p'] = self.top_p
+        if self.top_a is not None:
+            result['top_a'] = self.top_a
+        if self.typical_p is not None:
+            result['typical_p'] = self.typical_p
+        if self.tail_free_sampling is not None:
+            result['tail_free_sampling'] = self.tail_free_sampling
+        if self.repetition_penalty is not None:
+            result['repetition_penalty'] = self.repetition_penalty
+        if self.repetition_penalty_slope is not None:
+            result['repetition_penalty_slope'] = self.repetition_penalty_slope
+        if self.repetition_penalty_frequency is not None:
+            result['repetition_penalty_frequency'] = self.repetition_penalty_frequency
+        if self.repetition_penalty_presence is not None:
+            result['repetition_penalty_presence'] = self.repetition_penalty_presence
+        if self.repetition_penalty_whitelist is not None:
+            result['repetition_penalty_whitelist'] = self.repetition_penalty_whitelist
+        if self.repetition_penalty_range is not None:
+            result['repetition_penalty_range'] = self.repetition_penalty_range
+        if self.logit_bias is not None:
+            result['logit_bias'] = self.logit_bias
+        if self.logit_bias_groups is not None:
+            result['logit_bias_groups'] = self.logit_bias_groups
+        if self.ban_brackets is not None:
+            result['ban_brackets'] = self.ban_brackets
+        if self.trim_spaces is not None:
+            result['trim_spaces'] = self.trim_spaces
+        if self.output_nonzero_probs is not None:
+            result['output_nonzero_probs'] = self.output_nonzero_probs
+        if self.next_word is not None:
+            result['next_word'] = self.next_word
+        if self.num_logprobs is not None:
+            result['num_logprobs'] = self.num_logprobs
+        if self.bad_words_ids is not None:
+            result['bad_words_ids'] = self.bad_words_ids
+        if self.use_cache is not None:
+            result['use_cache'] = self.use_cache
+        if self.use_string is not None:
+            result['use_string'] = self.use_string
+        if self.return_full_text is not None:
+            result['return_full_text'] = self.return_full_text
+        if self.prefix is not None:
+            result['prefix'] = self.prefix
+        if self.generate_until_sentence is not None:
+            result['generate_until_sentence'] = self.generate_until_sentence
+        if self.order is not None:
+            result['order'] = self.order
+        return json.dumps(result)
 
 def response_code_exception(response):
     if response is None:
