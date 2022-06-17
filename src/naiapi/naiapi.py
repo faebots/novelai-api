@@ -185,7 +185,6 @@ class NAIApi:
         if module is not None:
             if module.startswith(MODELS[model]):
                 params.prefix = module
-        print(params)
         if get_stream:
             api_url = NAIApi.__base_url__ + "ai/generate-stream"
         else:
